@@ -39,6 +39,6 @@
       "es"
     ],
     "herokuDeployType": "git",
-    "herokuAppName": null
+    "herokuAppName": "twenty-one-points-ev-02052018"
   }
 }
