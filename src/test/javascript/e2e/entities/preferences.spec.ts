@@ -35,8 +35,7 @@ describe('Preferences e2e test', () => {
         preferencesComponentsPage.clickOnCreateButton();
         preferencesDialogPage.setWeekly_goalInput('5');
         expect(preferencesDialogPage.getWeekly_goalInput()).toMatch('5');
-        preferencesDialogPage.setWeight_unitsInput('5');
-        expect(preferencesDialogPage.getWeight_unitsInput()).toMatch('5');
+        preferencesDialogPage.weight_unitsSelectLastOption();
         preferencesDialogPage.userSelectLastOption();
         preferencesDialogPage.save();
         expect(preferencesDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -65,7 +64,7 @@ export class PreferencesDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     weekly_goalInput = element(by.css('input#field_weekly_goal'));
-    weight_unitsInput = element(by.css('input#field_weight_units'));
+    weight_unitsSelect = element(by.css('select#field_weight_units'));
     userSelect = element(by.css('select#field_user'));
 
     getModalTitle() {
@@ -80,14 +79,17 @@ export class PreferencesDialogPage {
         return this.weekly_goalInput.getAttribute('value');
     };
 
-    setWeight_unitsInput = function(weight_units) {
-        this.weight_unitsInput.sendKeys(weight_units);
+    setWeight_unitsSelect = function(weight_units) {
+        this.weight_unitsSelect.sendKeys(weight_units);
     };
 
-    getWeight_unitsInput = function() {
-        return this.weight_unitsInput.getAttribute('value');
+    getWeight_unitsSelect = function() {
+        return this.weight_unitsSelect.element(by.css('option:checked')).getText();
     };
 
+    weight_unitsSelectLastOption = function() {
+        this.weight_unitsSelect.all(by.tagName('option')).last().click();
+    };
     userSelectLastOption = function() {
         this.userSelect.all(by.tagName('option')).last().click();
     };

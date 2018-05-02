@@ -10,6 +10,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.jhipster.health.domain.enumeration.Units;
+
 /**
  * A Preferences.
  */
@@ -31,8 +33,10 @@ public class Preferences implements Serializable {
     @Column(name = "weekly_goal")
     private Integer weekly_goal;
 
-    @Column(name = "weight_units")
-    private Integer weight_units;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "weight_units", nullable = false)
+    private Units weight_units;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -60,16 +64,16 @@ public class Preferences implements Serializable {
         this.weekly_goal = weekly_goal;
     }
 
-    public Integer getWeight_units() {
+    public Units getWeight_units() {
         return weight_units;
     }
 
-    public Preferences weight_units(Integer weight_units) {
+    public Preferences weight_units(Units weight_units) {
         this.weight_units = weight_units;
         return this;
     }
 
-    public void setWeight_units(Integer weight_units) {
+    public void setWeight_units(Units weight_units) {
         this.weight_units = weight_units;
     }
 
@@ -112,7 +116,7 @@ public class Preferences implements Serializable {
         return "Preferences{" +
             "id=" + getId() +
             ", weekly_goal=" + getWeekly_goal() +
-            ", weight_units=" + getWeight_units() +
+            ", weight_units='" + getWeight_units() + "'" +
             "}";
     }
 }

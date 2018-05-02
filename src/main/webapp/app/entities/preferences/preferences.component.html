@@ -40,7 +40,7 @@
             <tr *ngFor="let preferences of preferences ;trackBy: trackId">
                 <td><a [routerLink]="['../preferences', preferences.id ]">{{preferences.id}}</a></td>
                 <td>{{preferences.weekly_goal}}</td>
-                <td>{{preferences.weight_units}}</td>
+                <td jhiTranslate="{{'twentyOnePointsApp.Units.' + preferences.weight_units}}">{{preferences.weight_units}}</td>
                 <td>
                     {{preferences.user?.login}}
                 </td>

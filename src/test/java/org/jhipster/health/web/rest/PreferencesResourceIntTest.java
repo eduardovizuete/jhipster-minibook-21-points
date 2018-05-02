@@ -30,6 +30,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.jhipster.health.domain.enumeration.Units;
 /**
  * Test class for the PreferencesResource REST controller.
  *
@@ -42,8 +43,8 @@ public class PreferencesResourceIntTest {
     private static final Integer DEFAULT_WEEKLY_GOAL = 10;
     private static final Integer UPDATED_WEEKLY_GOAL = 11;
 
-    private static final Integer DEFAULT_WEIGHT_UNITS = 1;
-    private static final Integer UPDATED_WEIGHT_UNITS = 2;
+    private static final Units DEFAULT_WEIGHT_UNITS = Units.kg;
+    private static final Units UPDATED_WEIGHT_UNITS = Units.lb;
 
     @Autowired
     private PreferencesRepository preferencesRepository;
@@ -141,6 +142,24 @@ public class PreferencesResourceIntTest {
 
     @Test
     @Transactional
+    public void checkWeight_unitsIsRequired() throws Exception {
+        int databaseSizeBeforeTest = preferencesRepository.findAll().size();
+        // set the field null
+        preferences.setWeight_units(null);
+
+        // Create the Preferences, which fails.
+
+        restPreferencesMockMvc.perform(post("/api/preferences")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(preferences)))
+            .andExpect(status().isBadRequest());
+
+        List<Preferences> preferencesList = preferencesRepository.findAll();
+        assertThat(preferencesList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPreferences() throws Exception {
         // Initialize the database
         preferencesRepository.saveAndFlush(preferences);
@@ -151,7 +170,7 @@ public class PreferencesResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(preferences.getId().intValue())))
             .andExpect(jsonPath("$.[*].weekly_goal").value(hasItem(DEFAULT_WEEKLY_GOAL)))
-            .andExpect(jsonPath("$.[*].weight_units").value(hasItem(DEFAULT_WEIGHT_UNITS)));
+            .andExpect(jsonPath("$.[*].weight_units").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())));
     }
 
     @Test
@@ -166,7 +185,7 @@ public class PreferencesResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(preferences.getId().intValue()))
             .andExpect(jsonPath("$.weekly_goal").value(DEFAULT_WEEKLY_GOAL))
-            .andExpect(jsonPath("$.weight_units").value(DEFAULT_WEIGHT_UNITS));
+            .andExpect(jsonPath("$.weight_units").value(DEFAULT_WEIGHT_UNITS.toString()));
     }
 
     @Test
@@ -263,7 +282,7 @@ public class PreferencesResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(preferences.getId().intValue())))
             .andExpect(jsonPath("$.[*].weekly_goal").value(hasItem(DEFAULT_WEEKLY_GOAL)))
-            .andExpect(jsonPath("$.[*].weight_units").value(hasItem(DEFAULT_WEIGHT_UNITS)));
+            .andExpect(jsonPath("$.[*].weight_units").value(hasItem(DEFAULT_WEIGHT_UNITS.toString())));
     }
 
     @Test
