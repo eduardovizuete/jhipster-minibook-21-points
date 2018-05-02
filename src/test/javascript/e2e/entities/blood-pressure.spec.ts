@@ -33,8 +33,8 @@ describe('BloodPressure e2e test', () => {
 
     it('should create and save BloodPressures', () => {
         bloodPressureComponentsPage.clickOnCreateButton();
-        bloodPressureDialogPage.setDate_timeInput('2000-12-31');
-        expect(bloodPressureDialogPage.getDate_timeInput()).toMatch('2000-12-31');
+        bloodPressureDialogPage.setTimestampInput('2000-12-31');
+        expect(bloodPressureDialogPage.getTimestampInput()).toMatch('2000-12-31');
         bloodPressureDialogPage.setSystolicInput('5');
         expect(bloodPressureDialogPage.getSystolicInput()).toMatch('5');
         bloodPressureDialogPage.setDiastolicInput('5');
@@ -66,7 +66,7 @@ export class BloodPressureDialogPage {
     modalTitle = element(by.css('h4#myBloodPressureLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    date_timeInput = element(by.css('input#field_date_time'));
+    timestampInput = element(by.css('input#field_timestamp'));
     systolicInput = element(by.css('input#field_systolic'));
     diastolicInput = element(by.css('input#field_diastolic'));
     userSelect = element(by.css('select#field_user'));
@@ -75,12 +75,12 @@ export class BloodPressureDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setDate_timeInput = function(date_time) {
-        this.date_timeInput.sendKeys(date_time);
+    setTimestampInput = function(timestamp) {
+        this.timestampInput.sendKeys(timestamp);
     };
 
-    getDate_timeInput = function() {
-        return this.date_timeInput.getAttribute('value');
+    getTimestampInput = function() {
+        return this.timestampInput.getAttribute('value');
     };
 
     setSystolicInput = function(systolic) {

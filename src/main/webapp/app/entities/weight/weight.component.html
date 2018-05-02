@@ -30,7 +30,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="datetime"><span jhiTranslate="twentyOnePointsApp.weight.datetime">Datetime</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="timestamp"><span jhiTranslate="twentyOnePointsApp.weight.timestamp">Timestamp</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="weight"><span jhiTranslate="twentyOnePointsApp.weight.weight">Weight</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="user.login"><span jhiTranslate="twentyOnePointsApp.weight.user">User</span> <span class="fa fa-sort"></span></th>
             <th></th>
@@ -39,7 +39,7 @@
             <tbody>
             <tr *ngFor="let weight of weights ;trackBy: trackId">
                 <td><a [routerLink]="['../weight', weight.id ]">{{weight.id}}</a></td>
-                <td>{{weight.datetime | date:'mediumDate'}}</td>
+                <td>{{weight.timestamp | date:'mediumDate'}}</td>
                 <td>{{weight.weight}}</td>
                 <td>
                     {{weight.user?.login}}

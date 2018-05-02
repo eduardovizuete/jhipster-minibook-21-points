@@ -30,7 +30,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
             <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="date_time"><span jhiTranslate="twentyOnePointsApp.bloodPressure.date_time">Date Time</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="timestamp"><span jhiTranslate="twentyOnePointsApp.bloodPressure.timestamp">Timestamp</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="systolic"><span jhiTranslate="twentyOnePointsApp.bloodPressure.systolic">Systolic</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="diastolic"><span jhiTranslate="twentyOnePointsApp.bloodPressure.diastolic">Diastolic</span> <span class="fa fa-sort"></span></th>
             <th jhiSortBy="user.login"><span jhiTranslate="twentyOnePointsApp.bloodPressure.user">User</span> <span class="fa fa-sort"></span></th>
@@ -40,7 +40,7 @@
             <tbody>
             <tr *ngFor="let bloodPressure of bloodPressures ;trackBy: trackId">
                 <td><a [routerLink]="['../blood-pressure', bloodPressure.id ]">{{bloodPressure.id}}</a></td>
-                <td>{{bloodPressure.date_time | date:'mediumDate'}}</td>
+                <td>{{bloodPressure.timestamp | date:'mediumDate'}}</td>
                 <td>{{bloodPressure.systolic}}</td>
                 <td>{{bloodPressure.diastolic}}</td>
                 <td>

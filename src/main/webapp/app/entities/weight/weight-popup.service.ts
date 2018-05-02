@@ -29,11 +29,11 @@ export class WeightPopupService {
                 this.weightService.find(id)
                     .subscribe((weightResponse: HttpResponse<Weight>) => {
                         const weight: Weight = weightResponse.body;
-                        if (weight.datetime) {
-                            weight.datetime = {
-                                year: weight.datetime.getFullYear(),
-                                month: weight.datetime.getMonth() + 1,
-                                day: weight.datetime.getDate()
+                        if (weight.timestamp) {
+                            weight.timestamp = {
+                                year: weight.timestamp.getFullYear(),
+                                month: weight.timestamp.getMonth() + 1,
+                                day: weight.timestamp.getDate()
                             };
                         }
                         this.ngbModalRef = this.weightModalRef(component, weight);

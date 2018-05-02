@@ -33,8 +33,8 @@ describe('Weight e2e test', () => {
 
     it('should create and save Weights', () => {
         weightComponentsPage.clickOnCreateButton();
-        weightDialogPage.setDatetimeInput('2000-12-31');
-        expect(weightDialogPage.getDatetimeInput()).toMatch('2000-12-31');
+        weightDialogPage.setTimestampInput('2000-12-31');
+        expect(weightDialogPage.getTimestampInput()).toMatch('2000-12-31');
         weightDialogPage.setWeightInput('5');
         expect(weightDialogPage.getWeightInput()).toMatch('5');
         weightDialogPage.userSelectLastOption();
@@ -64,7 +64,7 @@ export class WeightDialogPage {
     modalTitle = element(by.css('h4#myWeightLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    datetimeInput = element(by.css('input#field_datetime'));
+    timestampInput = element(by.css('input#field_timestamp'));
     weightInput = element(by.css('input#field_weight'));
     userSelect = element(by.css('select#field_user'));
 
@@ -72,12 +72,12 @@ export class WeightDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setDatetimeInput = function(datetime) {
-        this.datetimeInput.sendKeys(datetime);
+    setTimestampInput = function(timestamp) {
+        this.timestampInput.sendKeys(timestamp);
     };
 
-    getDatetimeInput = function() {
-        return this.datetimeInput.getAttribute('value');
+    getTimestampInput = function() {
+        return this.timestampInput.getAttribute('value');
     };
 
     setWeightInput = function(weight) {

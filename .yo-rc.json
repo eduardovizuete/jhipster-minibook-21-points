@@ -37,6 +37,8 @@
     "languages": [
       "en",
       "es"
-    ]
+    ],
+    "herokuDeployType": "git",
+    "herokuAppName": "tranquil-island-23289"
   }
 }

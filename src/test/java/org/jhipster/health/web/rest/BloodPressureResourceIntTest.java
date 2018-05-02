@@ -41,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TwentyOnePointsApp.class)
 public class BloodPressureResourceIntTest {
 
-    private static final LocalDate DEFAULT_DATE_TIME = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATE_TIME = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate DEFAULT_TIMESTAMP = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_TIMESTAMP = LocalDate.now(ZoneId.systemDefault());
 
     private static final Integer DEFAULT_SYSTOLIC = 1;
     private static final Integer UPDATED_SYSTOLIC = 2;
@@ -91,7 +91,7 @@ public class BloodPressureResourceIntTest {
      */
     public static BloodPressure createEntity(EntityManager em) {
         BloodPressure bloodPressure = new BloodPressure()
-            .date_time(DEFAULT_DATE_TIME)
+            .timestamp(DEFAULT_TIMESTAMP)
             .systolic(DEFAULT_SYSTOLIC)
             .diastolic(DEFAULT_DIASTOLIC);
         return bloodPressure;
@@ -118,7 +118,7 @@ public class BloodPressureResourceIntTest {
         List<BloodPressure> bloodPressureList = bloodPressureRepository.findAll();
         assertThat(bloodPressureList).hasSize(databaseSizeBeforeCreate + 1);
         BloodPressure testBloodPressure = bloodPressureList.get(bloodPressureList.size() - 1);
-        assertThat(testBloodPressure.getDate_time()).isEqualTo(DEFAULT_DATE_TIME);
+        assertThat(testBloodPressure.getTimestamp()).isEqualTo(DEFAULT_TIMESTAMP);
         assertThat(testBloodPressure.getSystolic()).isEqualTo(DEFAULT_SYSTOLIC);
         assertThat(testBloodPressure.getDiastolic()).isEqualTo(DEFAULT_DIASTOLIC);
 
@@ -148,10 +148,10 @@ public class BloodPressureResourceIntTest {
 
     @Test
     @Transactional
-    public void checkDate_timeIsRequired() throws Exception {
+    public void checkTimestampIsRequired() throws Exception {
         int databaseSizeBeforeTest = bloodPressureRepository.findAll().size();
         // set the field null
-        bloodPressure.setDate_time(null);
+        bloodPressure.setTimestamp(null);
 
         // Create the BloodPressure, which fails.
 
@@ -175,7 +175,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(bloodPressure.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date_time").value(hasItem(DEFAULT_DATE_TIME.toString())))
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
             .andExpect(jsonPath("$.[*].systolic").value(hasItem(DEFAULT_SYSTOLIC)))
             .andExpect(jsonPath("$.[*].diastolic").value(hasItem(DEFAULT_DIASTOLIC)));
     }
@@ -191,7 +191,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(bloodPressure.getId().intValue()))
-            .andExpect(jsonPath("$.date_time").value(DEFAULT_DATE_TIME.toString()))
+            .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP.toString()))
             .andExpect(jsonPath("$.systolic").value(DEFAULT_SYSTOLIC))
             .andExpect(jsonPath("$.diastolic").value(DEFAULT_DIASTOLIC));
     }
@@ -217,7 +217,7 @@ public class BloodPressureResourceIntTest {
         // Disconnect from session so that the updates on updatedBloodPressure are not directly saved in db
         em.detach(updatedBloodPressure);
         updatedBloodPressure
-            .date_time(UPDATED_DATE_TIME)
+            .timestamp(UPDATED_TIMESTAMP)
             .systolic(UPDATED_SYSTOLIC)
             .diastolic(UPDATED_DIASTOLIC);
 
@@ -230,7 +230,7 @@ public class BloodPressureResourceIntTest {
         List<BloodPressure> bloodPressureList = bloodPressureRepository.findAll();
         assertThat(bloodPressureList).hasSize(databaseSizeBeforeUpdate);
         BloodPressure testBloodPressure = bloodPressureList.get(bloodPressureList.size() - 1);
-        assertThat(testBloodPressure.getDate_time()).isEqualTo(UPDATED_DATE_TIME);
+        assertThat(testBloodPressure.getTimestamp()).isEqualTo(UPDATED_TIMESTAMP);
         assertThat(testBloodPressure.getSystolic()).isEqualTo(UPDATED_SYSTOLIC);
         assertThat(testBloodPressure.getDiastolic()).isEqualTo(UPDATED_DIASTOLIC);
 
@@ -291,7 +291,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(bloodPressure.getId().intValue())))
-            .andExpect(jsonPath("$.[*].date_time").value(hasItem(DEFAULT_DATE_TIME.toString())))
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
             .andExpect(jsonPath("$.[*].systolic").value(hasItem(DEFAULT_SYSTOLIC)))
             .andExpect(jsonPath("$.[*].diastolic").value(hasItem(DEFAULT_DIASTOLIC)));
     }

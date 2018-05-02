@@ -70,8 +70,8 @@ export class WeightService {
      */
     private convertItemFromServer(weight: Weight): Weight {
         const copy: Weight = Object.assign({}, weight);
-        copy.datetime = this.dateUtils
-            .convertLocalDateFromServer(weight.datetime);
+        copy.timestamp = this.dateUtils
+            .convertLocalDateFromServer(weight.timestamp);
         return copy;
     }
 
@@ -80,8 +80,8 @@ export class WeightService {
      */
     private convert(weight: Weight): Weight {
         const copy: Weight = Object.assign({}, weight);
-        copy.datetime = this.dateUtils
-            .convertLocalDateToServer(weight.datetime);
+        copy.timestamp = this.dateUtils
+            .convertLocalDateToServer(weight.timestamp);
         return copy;
     }
 }

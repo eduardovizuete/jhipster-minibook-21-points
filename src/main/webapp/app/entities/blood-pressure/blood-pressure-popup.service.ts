@@ -29,11 +29,11 @@ export class BloodPressurePopupService {
                 this.bloodPressureService.find(id)
                     .subscribe((bloodPressureResponse: HttpResponse<BloodPressure>) => {
                         const bloodPressure: BloodPressure = bloodPressureResponse.body;
-                        if (bloodPressure.date_time) {
-                            bloodPressure.date_time = {
-                                year: bloodPressure.date_time.getFullYear(),
-                                month: bloodPressure.date_time.getMonth() + 1,
-                                day: bloodPressure.date_time.getDate()
+                        if (bloodPressure.timestamp) {
+                            bloodPressure.timestamp = {
+                                year: bloodPressure.timestamp.getFullYear(),
+                                month: bloodPressure.timestamp.getMonth() + 1,
+                                day: bloodPressure.timestamp.getDate()
                             };
                         }
                         this.ngbModalRef = this.bloodPressureModalRef(component, bloodPressure);

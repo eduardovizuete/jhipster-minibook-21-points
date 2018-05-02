@@ -41,8 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TwentyOnePointsApp.class)
 public class WeightResourceIntTest {
 
-    private static final LocalDate DEFAULT_DATETIME = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_DATETIME = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate DEFAULT_TIMESTAMP = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_TIMESTAMP = LocalDate.now(ZoneId.systemDefault());
 
     private static final Integer DEFAULT_WEIGHT = 1;
     private static final Integer UPDATED_WEIGHT = 2;
@@ -88,7 +88,7 @@ public class WeightResourceIntTest {
      */
     public static Weight createEntity(EntityManager em) {
         Weight weight = new Weight()
-            .datetime(DEFAULT_DATETIME)
+            .timestamp(DEFAULT_TIMESTAMP)
             .weight(DEFAULT_WEIGHT);
         return weight;
     }
@@ -114,7 +114,7 @@ public class WeightResourceIntTest {
         List<Weight> weightList = weightRepository.findAll();
         assertThat(weightList).hasSize(databaseSizeBeforeCreate + 1);
         Weight testWeight = weightList.get(weightList.size() - 1);
-        assertThat(testWeight.getDatetime()).isEqualTo(DEFAULT_DATETIME);
+        assertThat(testWeight.getTimestamp()).isEqualTo(DEFAULT_TIMESTAMP);
         assertThat(testWeight.getWeight()).isEqualTo(DEFAULT_WEIGHT);
 
         // Validate the Weight in Elasticsearch
@@ -143,10 +143,10 @@ public class WeightResourceIntTest {
 
     @Test
     @Transactional
-    public void checkDatetimeIsRequired() throws Exception {
+    public void checkTimestampIsRequired() throws Exception {
         int databaseSizeBeforeTest = weightRepository.findAll().size();
         // set the field null
-        weight.setDatetime(null);
+        weight.setTimestamp(null);
 
         // Create the Weight, which fails.
 
@@ -170,7 +170,7 @@ public class WeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(weight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datetime").value(hasItem(DEFAULT_DATETIME.toString())))
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)));
     }
 
@@ -185,7 +185,7 @@ public class WeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(weight.getId().intValue()))
-            .andExpect(jsonPath("$.datetime").value(DEFAULT_DATETIME.toString()))
+            .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP.toString()))
             .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT));
     }
 
@@ -210,7 +210,7 @@ public class WeightResourceIntTest {
         // Disconnect from session so that the updates on updatedWeight are not directly saved in db
         em.detach(updatedWeight);
         updatedWeight
-            .datetime(UPDATED_DATETIME)
+            .timestamp(UPDATED_TIMESTAMP)
             .weight(UPDATED_WEIGHT);
 
         restWeightMockMvc.perform(put("/api/weights")
@@ -222,7 +222,7 @@ public class WeightResourceIntTest {
         List<Weight> weightList = weightRepository.findAll();
         assertThat(weightList).hasSize(databaseSizeBeforeUpdate);
         Weight testWeight = weightList.get(weightList.size() - 1);
-        assertThat(testWeight.getDatetime()).isEqualTo(UPDATED_DATETIME);
+        assertThat(testWeight.getTimestamp()).isEqualTo(UPDATED_TIMESTAMP);
         assertThat(testWeight.getWeight()).isEqualTo(UPDATED_WEIGHT);
 
         // Validate the Weight in Elasticsearch
@@ -282,7 +282,7 @@ public class WeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(weight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].datetime").value(hasItem(DEFAULT_DATETIME.toString())))
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)));
     }
 

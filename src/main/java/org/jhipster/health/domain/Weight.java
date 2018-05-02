@@ -28,8 +28,8 @@ public class Weight implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "datetime", nullable = false)
-    private LocalDate datetime;
+    @Column(name = "jhi_timestamp", nullable = false)
+    private LocalDate timestamp;
 
     @Column(name = "weight")
     private Integer weight;
@@ -46,17 +46,17 @@ public class Weight implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDatetime() {
-        return datetime;
+    public LocalDate getTimestamp() {
+        return timestamp;
     }
 
-    public Weight datetime(LocalDate datetime) {
-        this.datetime = datetime;
+    public Weight timestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
         return this;
     }
 
-    public void setDatetime(LocalDate datetime) {
-        this.datetime = datetime;
+    public void setTimestamp(LocalDate timestamp) {
+        this.timestamp = timestamp;
     }
 
     public Integer getWeight() {
@@ -110,7 +110,7 @@ public class Weight implements Serializable {
     public String toString() {
         return "Weight{" +
             "id=" + getId() +
-            ", datetime='" + getDatetime() + "'" +
+            ", timestamp='" + getTimestamp() + "'" +
             ", weight=" + getWeight() +
             "}";
     }

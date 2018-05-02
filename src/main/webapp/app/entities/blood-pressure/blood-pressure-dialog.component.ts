@@ -21,7 +21,7 @@ export class BloodPressureDialogComponent implements OnInit {
     isSaving: boolean;
 
     users: User[];
-    date_timeDp: any;
+    timestampDp: any;
 
     constructor(
         public activeModal: NgbActiveModal,

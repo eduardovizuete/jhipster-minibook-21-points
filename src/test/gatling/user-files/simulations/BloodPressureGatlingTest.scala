@@ -68,7 +68,7 @@ class BloodPressureGatlingTest extends Simulation {
             .exec(http("Create new bloodPressure")
             .post("/api/blood-pressures")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "date_time":"2020-01-01T00:00:00.000Z", "systolic":"0", "diastolic":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "timestamp":"2020-01-01T00:00:00.000Z", "systolic":"0", "diastolic":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_bloodPressure_url"))).exitHereIfFailed
             .pause(10)
