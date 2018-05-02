@@ -12,7 +12,7 @@
 
 eureka:
     instance:
-        hostname: tranquil-island-23289.herokuapp.com
+        hostname: twenty-one-points-ev-02052018.herokuapp.com
         non-secure-port: 80
         prefer-ip-address: false
     client:

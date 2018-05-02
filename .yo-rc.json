@@ -39,6 +39,6 @@
       "es"
     ],
     "herokuDeployType": "git",
-    "herokuAppName": "tranquil-island-23289"
+    "herokuAppName": null
   }
 }
