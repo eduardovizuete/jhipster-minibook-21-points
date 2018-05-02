@@ -45,6 +45,7 @@ public class CacheConfiguration {
             cm.createCache(org.jhipster.health.domain.Points.class.getName(), jcacheConfiguration);
             cm.createCache(org.jhipster.health.domain.Weight.class.getName(), jcacheConfiguration);
             cm.createCache(org.jhipster.health.domain.BloodPressure.class.getName(), jcacheConfiguration);
+            cm.createCache(org.jhipster.health.domain.Preferences.class.getName(), jcacheConfiguration);
             // jhipster-needle-ehcache-add-entry
         };
     }
