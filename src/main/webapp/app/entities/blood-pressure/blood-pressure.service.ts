@@ -71,7 +71,7 @@ export class BloodPressureService {
     private convertItemFromServer(bloodPressure: BloodPressure): BloodPressure {
         const copy: BloodPressure = Object.assign({}, bloodPressure);
         copy.timestamp = this.dateUtils
-            .convertLocalDateFromServer(bloodPressure.timestamp);
+            .convertDateTimeFromServer(bloodPressure.timestamp);
         return copy;
     }
 
@@ -80,8 +80,8 @@ export class BloodPressureService {
      */
     private convert(bloodPressure: BloodPressure): BloodPressure {
         const copy: BloodPressure = Object.assign({}, bloodPressure);
-        copy.timestamp = this.dateUtils
-            .convertLocalDateToServer(bloodPressure.timestamp);
+
+        copy.timestamp = this.dateUtils.toDate(bloodPressure.timestamp);
         return copy;
     }
 }

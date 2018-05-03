@@ -13,14 +13,14 @@
     "fields": [
         {
             "fieldName": "timestamp",
-            "fieldType": "LocalDate",
+            "fieldType": "ZonedDateTime",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
             "fieldName": "weight",
-            "fieldType": "Integer"
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20180502183713",

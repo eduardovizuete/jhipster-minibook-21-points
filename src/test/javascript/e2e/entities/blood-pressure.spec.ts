@@ -33,8 +33,8 @@ describe('BloodPressure e2e test', () => {
 
     it('should create and save BloodPressures', () => {
         bloodPressureComponentsPage.clickOnCreateButton();
-        bloodPressureDialogPage.setTimestampInput('2000-12-31');
-        expect(bloodPressureDialogPage.getTimestampInput()).toMatch('2000-12-31');
+        bloodPressureDialogPage.setTimestampInput(12310020012301);
+        expect(bloodPressureDialogPage.getTimestampInput()).toMatch('2001-12-31T02:30');
         bloodPressureDialogPage.setSystolicInput('5');
         expect(bloodPressureDialogPage.getSystolicInput()).toMatch('5');
         bloodPressureDialogPage.setDiastolicInput('5');

@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -29,10 +29,10 @@ public class Weight implements Serializable {
 
     @NotNull
     @Column(name = "jhi_timestamp", nullable = false)
-    private LocalDate timestamp;
+    private ZonedDateTime timestamp;
 
     @Column(name = "weight")
-    private Integer weight;
+    private Double weight;
 
     @ManyToOne
     private User user;
@@ -46,29 +46,29 @@ public class Weight implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getTimestamp() {
+    public ZonedDateTime getTimestamp() {
         return timestamp;
     }
 
-    public Weight timestamp(LocalDate timestamp) {
+    public Weight timestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(ZonedDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
-    public Integer getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public Weight weight(Integer weight) {
+    public Weight weight(Double weight) {
         this.weight = weight;
         return this;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(Double weight) {
         this.weight = weight;
     }
 

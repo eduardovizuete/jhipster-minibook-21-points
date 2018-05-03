@@ -40,7 +40,7 @@
             <tbody>
             <tr *ngFor="let bloodPressure of bloodPressures ;trackBy: trackId">
                 <td><a [routerLink]="['../blood-pressure', bloodPressure.id ]">{{bloodPressure.id}}</a></td>
-                <td>{{bloodPressure.timestamp | date:'mediumDate'}}</td>
+                <td>{{bloodPressure.timestamp | date:'medium'}}</td>
                 <td>{{bloodPressure.systolic}}</td>
                 <td>{{bloodPressure.diastolic}}</td>
                 <td>

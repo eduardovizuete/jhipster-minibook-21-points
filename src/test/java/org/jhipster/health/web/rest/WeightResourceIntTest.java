@@ -22,10 +22,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
+import static org.jhipster.health.web.rest.TestUtil.sameInstant;
 import static org.jhipster.health.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -41,11 +44,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TwentyOnePointsApp.class)
 public class WeightResourceIntTest {
 
-    private static final LocalDate DEFAULT_TIMESTAMP = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_TIMESTAMP = LocalDate.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final Integer DEFAULT_WEIGHT = 1;
-    private static final Integer UPDATED_WEIGHT = 2;
+    private static final Double DEFAULT_WEIGHT = 1D;
+    private static final Double UPDATED_WEIGHT = 2D;
 
     @Autowired
     private WeightRepository weightRepository;
@@ -119,7 +122,8 @@ public class WeightResourceIntTest {
 
         // Validate the Weight in Elasticsearch
         Weight weightEs = weightSearchRepository.findOne(testWeight.getId());
-        assertThat(weightEs).isEqualToIgnoringGivenFields(testWeight);
+        assertThat(testWeight.getTimestamp()).isEqualTo(testWeight.getTimestamp());
+        assertThat(weightEs).isEqualToIgnoringGivenFields(testWeight, "timestamp");
     }
 
     @Test
@@ -170,8 +174,8 @@ public class WeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(weight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)));
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(sameInstant(DEFAULT_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test
@@ -185,8 +189,8 @@ public class WeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(weight.getId().intValue()))
-            .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP.toString()))
-            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT));
+            .andExpect(jsonPath("$.timestamp").value(sameInstant(DEFAULT_TIMESTAMP)))
+            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()));
     }
 
     @Test
@@ -227,7 +231,8 @@ public class WeightResourceIntTest {
 
         // Validate the Weight in Elasticsearch
         Weight weightEs = weightSearchRepository.findOne(testWeight.getId());
-        assertThat(weightEs).isEqualToIgnoringGivenFields(testWeight);
+        assertThat(testWeight.getTimestamp()).isEqualTo(testWeight.getTimestamp());
+        assertThat(weightEs).isEqualToIgnoringGivenFields(testWeight, "timestamp");
     }
 
     @Test
@@ -282,8 +287,8 @@ public class WeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(weight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)));
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(sameInstant(DEFAULT_TIMESTAMP))))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test

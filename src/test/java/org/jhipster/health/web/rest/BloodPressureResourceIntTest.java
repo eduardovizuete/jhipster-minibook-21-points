@@ -22,10 +22,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
 import java.time.ZoneId;
 import java.util.List;
 
+import static org.jhipster.health.web.rest.TestUtil.sameInstant;
 import static org.jhipster.health.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -41,8 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = TwentyOnePointsApp.class)
 public class BloodPressureResourceIntTest {
 
-    private static final LocalDate DEFAULT_TIMESTAMP = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_TIMESTAMP = LocalDate.now(ZoneId.systemDefault());
+    private static final ZonedDateTime DEFAULT_TIMESTAMP = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_TIMESTAMP = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     private static final Integer DEFAULT_SYSTOLIC = 1;
     private static final Integer UPDATED_SYSTOLIC = 2;
@@ -124,7 +127,8 @@ public class BloodPressureResourceIntTest {
 
         // Validate the BloodPressure in Elasticsearch
         BloodPressure bloodPressureEs = bloodPressureSearchRepository.findOne(testBloodPressure.getId());
-        assertThat(bloodPressureEs).isEqualToIgnoringGivenFields(testBloodPressure);
+        assertThat(testBloodPressure.getTimestamp()).isEqualTo(testBloodPressure.getTimestamp());
+        assertThat(bloodPressureEs).isEqualToIgnoringGivenFields(testBloodPressure, "timestamp");
     }
 
     @Test
@@ -175,7 +179,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(bloodPressure.getId().intValue())))
-            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(sameInstant(DEFAULT_TIMESTAMP))))
             .andExpect(jsonPath("$.[*].systolic").value(hasItem(DEFAULT_SYSTOLIC)))
             .andExpect(jsonPath("$.[*].diastolic").value(hasItem(DEFAULT_DIASTOLIC)));
     }
@@ -191,7 +195,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(bloodPressure.getId().intValue()))
-            .andExpect(jsonPath("$.timestamp").value(DEFAULT_TIMESTAMP.toString()))
+            .andExpect(jsonPath("$.timestamp").value(sameInstant(DEFAULT_TIMESTAMP)))
             .andExpect(jsonPath("$.systolic").value(DEFAULT_SYSTOLIC))
             .andExpect(jsonPath("$.diastolic").value(DEFAULT_DIASTOLIC));
     }
@@ -236,7 +240,8 @@ public class BloodPressureResourceIntTest {
 
         // Validate the BloodPressure in Elasticsearch
         BloodPressure bloodPressureEs = bloodPressureSearchRepository.findOne(testBloodPressure.getId());
-        assertThat(bloodPressureEs).isEqualToIgnoringGivenFields(testBloodPressure);
+        assertThat(testBloodPressure.getTimestamp()).isEqualTo(testBloodPressure.getTimestamp());
+        assertThat(bloodPressureEs).isEqualToIgnoringGivenFields(testBloodPressure, "timestamp");
     }
 
     @Test
@@ -291,7 +296,7 @@ public class BloodPressureResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(bloodPressure.getId().intValue())))
-            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(DEFAULT_TIMESTAMP.toString())))
+            .andExpect(jsonPath("$.[*].timestamp").value(hasItem(sameInstant(DEFAULT_TIMESTAMP))))
             .andExpect(jsonPath("$.[*].systolic").value(hasItem(DEFAULT_SYSTOLIC)))
             .andExpect(jsonPath("$.[*].diastolic").value(hasItem(DEFAULT_DIASTOLIC)));
     }

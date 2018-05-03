@@ -2,6 +2,7 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { BloodPressure } from './blood-pressure.model';
 import { BloodPressureService } from './blood-pressure.service';
 
@@ -10,6 +11,7 @@ export class BloodPressurePopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
+        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private bloodPressureService: BloodPressureService
@@ -29,13 +31,8 @@ export class BloodPressurePopupService {
                 this.bloodPressureService.find(id)
                     .subscribe((bloodPressureResponse: HttpResponse<BloodPressure>) => {
                         const bloodPressure: BloodPressure = bloodPressureResponse.body;
-                        if (bloodPressure.timestamp) {
-                            bloodPressure.timestamp = {
-                                year: bloodPressure.timestamp.getFullYear(),
-                                month: bloodPressure.timestamp.getMonth() + 1,
-                                day: bloodPressure.timestamp.getDate()
-                            };
-                        }
+                        bloodPressure.timestamp = this.datePipe
+                            .transform(bloodPressure.timestamp, 'yyyy-MM-ddTHH:mm:ss');
                         this.ngbModalRef = this.bloodPressureModalRef(component, bloodPressure);
                         resolve(this.ngbModalRef);
                     });

@@ -2,6 +2,7 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { Weight } from './weight.model';
 import { WeightService } from './weight.service';
 
@@ -10,6 +11,7 @@ export class WeightPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
+        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private weightService: WeightService
@@ -29,13 +31,8 @@ export class WeightPopupService {
                 this.weightService.find(id)
                     .subscribe((weightResponse: HttpResponse<Weight>) => {
                         const weight: Weight = weightResponse.body;
-                        if (weight.timestamp) {
-                            weight.timestamp = {
-                                year: weight.timestamp.getFullYear(),
-                                month: weight.timestamp.getMonth() + 1,
-                                day: weight.timestamp.getDate()
-                            };
-                        }
+                        weight.timestamp = this.datePipe
+                            .transform(weight.timestamp, 'yyyy-MM-ddTHH:mm:ss');
                         this.ngbModalRef = this.weightModalRef(component, weight);
                         resolve(this.ngbModalRef);
                     });
