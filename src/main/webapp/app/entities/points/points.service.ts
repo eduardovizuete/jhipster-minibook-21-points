@@ -6,6 +6,7 @@ import { SERVER_API_URL } from '../../app.constants';
 import { JhiDateUtils } from 'ng-jhipster';
 
 import { Points } from './points.model';
+import { PointsPerWeek } from '../../shared/model/points-per-week.model';
 import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<Points>;
@@ -51,6 +52,22 @@ export class PointsService {
             .map((res: HttpResponse<Points[]>) => this.convertArrayResponse(res));
     }
 
+//    thisWeek(): Observable<PointsPerWeek> {
+//        return this.http.get<PointsPerWeek>('api/points-this-week')
+//            .map((data) => {
+//                console.log('thisWeek() -> ' + data);
+//                return data;
+//            });
+//    }
+
+    thisWeek(): Observable<HttpResponse<PointsPerWeek>> {
+        return this.http.get<PointsPerWeek>('api/points-this-week', { observe: 'response' })
+            .map((res: HttpResponse<PointsPerWeek>) => {
+                console.log('thisWeek() -> ' + res.body);
+                return res;
+            });
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Points = this.convertItemFromServer(res.body);
         return res.clone({body});
@@ -84,4 +101,5 @@ export class PointsService {
             .convertLocalDateToServer(points.date);
         return copy;
     }
+
 }

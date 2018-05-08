@@ -5,6 +5,7 @@ import org.jhipster.health.domain.Preferences;
 
 import org.jhipster.health.repository.PreferencesRepository;
 import org.jhipster.health.repository.search.PreferencesSearchRepository;
+import org.jhipster.health.security.SecurityUtils;
 import org.jhipster.health.web.rest.errors.BadRequestAlertException;
 import org.jhipster.health.web.rest.util.HeaderUtil;
 import org.jhipster.health.web.rest.util.PaginationUtil;
@@ -106,6 +107,25 @@ public class PreferencesResource {
         Page<Preferences> page = preferencesRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/preferences");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /my-preferences -> get the current user's preferences.
+     */
+    @GetMapping("/my-preferences")
+    @Timed
+    public ResponseEntity<Preferences> getUserPreferences() {
+        String username = String.valueOf(SecurityUtils.getCurrentUserLogin());
+        log.debug("REST request to get Preferences : {}", username);
+        Optional<Preferences> preferences = preferencesRepository.findOneByUserLogin(username);
+
+        if (preferences.isPresent()) {
+            return new ResponseEntity<>(preferences.get(), HttpStatus.OK);
+        } else {
+            Preferences defaultPreferences = new Preferences();
+            defaultPreferences.setWeekly_goal(10); // default
+            return new ResponseEntity<>(defaultPreferences, HttpStatus.OK);
+        }
     }
 
     /**

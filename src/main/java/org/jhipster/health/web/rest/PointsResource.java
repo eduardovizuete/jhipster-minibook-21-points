@@ -12,6 +12,7 @@ import org.jhipster.health.web.rest.errors.BadRequestAlertException;
 import org.jhipster.health.web.rest.util.HeaderUtil;
 import org.jhipster.health.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.jhipster.health.web.rest.vm.PointsPerWeek;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,6 +26,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -122,6 +125,36 @@ public class PointsResource {
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/points");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /points : get all the points for the current week.
+     */
+    @GetMapping("/points-this-week")
+    @Timed
+    public ResponseEntity<PointsPerWeek> getPointsThisWeek() {
+        // Get current date
+        // todo: get now() from user's timezone
+        LocalDate now = LocalDate.now();
+        // Get first day of week
+        LocalDate startOfWeek = now.with(DayOfWeek.MONDAY);
+        // Get last day of week
+        LocalDate endOfWeek = now.with(DayOfWeek.SUNDAY);
+        log.debug("Looking for points between: {} and {} and {}", startOfWeek, endOfWeek, SecurityUtils.getCurrentUserLogin());
+
+        List<Points> points = pointsRepository.findAllByDateBetweenAndUserLogin(startOfWeek, endOfWeek, SecurityUtils.getCurrentUserLogin().get());
+        return calculatePoints(startOfWeek, points);
+    }
+
+    private ResponseEntity<PointsPerWeek> calculatePoints(LocalDate startOfWeek, List<Points> points) {
+        log.debug("calculatePoints: {} count points {}", startOfWeek, points.size());
+
+        Integer numPoints = points.stream()
+            .mapToInt(p -> p.getExercise() + p.getMeals() + p.getAlcohol())
+            .sum();
+
+        PointsPerWeek count = new PointsPerWeek(startOfWeek, numPoints);
+        return new ResponseEntity<>(count, HttpStatus.OK);
     }
 
     /**

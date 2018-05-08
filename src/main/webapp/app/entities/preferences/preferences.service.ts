@@ -49,6 +49,13 @@ export class PreferencesService {
             .map((res: HttpResponse<Preferences[]>) => this.convertArrayResponse(res));
     }
 
+    user(): Observable<Preferences> {
+        return this.http.get<Preferences>('api/my-preferences').map((res) => {
+            console.log('user() -> ' + res);
+            return res;
+        });
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Preferences = this.convertItemFromServer(res.body);
         return res.clone({body});
