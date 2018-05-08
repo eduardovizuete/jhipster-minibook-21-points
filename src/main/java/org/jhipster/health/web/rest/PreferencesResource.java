@@ -115,7 +115,7 @@ public class PreferencesResource {
     @GetMapping("/my-preferences")
     @Timed
     public ResponseEntity<Preferences> getUserPreferences() {
-        String username = String.valueOf(SecurityUtils.getCurrentUserLogin());
+        String username = SecurityUtils.getCurrentUserLogin().get();
         log.debug("REST request to get Preferences : {}", username);
         Optional<Preferences> preferences = preferencesRepository.findOneByUserLogin(username);
 
