@@ -5,10 +5,12 @@ import org.jhipster.health.domain.Weight;
 
 import org.jhipster.health.repository.WeightRepository;
 import org.jhipster.health.repository.search.WeightSearchRepository;
+import org.jhipster.health.security.SecurityUtils;
 import org.jhipster.health.web.rest.errors.BadRequestAlertException;
 import org.jhipster.health.web.rest.util.HeaderUtil;
 import org.jhipster.health.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.jhipster.health.web.rest.vm.WeightByPeriod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -106,6 +110,22 @@ public class WeightResource {
         Page<Weight> page = weightRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/weights");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /weight-by-days : get all the weigh-ins for last x days.
+     */
+    @GetMapping("/weight-by-days/{days}")
+    @Timed
+    public ResponseEntity<WeightByPeriod> getByDays(@PathVariable int days) {
+        ZonedDateTime rightNow = ZonedDateTime.now(ZoneOffset.UTC);
+        ZonedDateTime daysAgo = rightNow.minusDays(days);
+
+        List<Weight> weighIns =
+            weightRepository.findAllByTimestampBetweenAndUserLoginOrderByTimestampDesc(
+                daysAgo, rightNow, SecurityUtils.getCurrentUserLogin().get());
+        WeightByPeriod response = new WeightByPeriod("Last " + days + " Days", weighIns);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     /**

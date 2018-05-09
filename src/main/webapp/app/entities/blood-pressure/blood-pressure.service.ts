@@ -51,6 +51,14 @@ export class BloodPressureService {
             .map((res: HttpResponse<BloodPressure[]>) => this.convertArrayResponse(res));
     }
 
+    last30Days(): Observable<HttpResponse<BloodPressure>> {
+        return this.http.get<BloodPressure>('api/bp-by-days/30', { observe: 'response' })
+            .map((res: HttpResponse<BloodPressure>) => {
+                console.log('last30Days(): -> ' + res.body);
+                return res;
+            });
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: BloodPressure = this.convertItemFromServer(res.body);
         return res.clone({body});

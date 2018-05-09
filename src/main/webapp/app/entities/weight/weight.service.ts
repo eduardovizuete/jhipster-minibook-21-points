@@ -51,6 +51,14 @@ export class WeightService {
             .map((res: HttpResponse<Weight[]>) => this.convertArrayResponse(res));
     }
 
+    last30Days(): Observable<HttpResponse<Weight>> {
+        return this.http.get<Weight>('api/weight-by-days/30', { observe: 'response' })
+            .map((res: HttpResponse<Weight>) => {
+                console.log('last30Days(): -> ' + res.body);
+                return res;
+        });
+    }
+
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Weight = this.convertItemFromServer(res.body);
         return res.clone({body});
