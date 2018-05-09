@@ -12,7 +12,7 @@
 
 eureka:
     instance:
-        hostname: twenty-one-points-ev-02052018.herokuapp.com
+        hostname: radiant-garden-83542.herokuapp.com
         non-secure-port: 80
         prefer-ip-address: false
     client:

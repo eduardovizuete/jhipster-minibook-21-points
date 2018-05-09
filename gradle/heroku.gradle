@@ -1,7 +1,7 @@
 apply plugin: 'com.heroku.sdk.heroku-gradle'
 
 heroku {
-  appName = "twenty-one-points-ev-02052018"
+  appName = "radiant-garden-83542"
 }
 
 gradle.taskGraph.whenReady {taskGraph ->
